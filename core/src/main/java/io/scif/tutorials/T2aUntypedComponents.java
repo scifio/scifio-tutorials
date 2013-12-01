@@ -29,7 +29,7 @@ import java.io.IOException;
 
 /**
  * Demonstrates how individual components can be used together instead of the
- * convenience method in IntroToSCIFIO
+ * convenience method in IntroToSCIFIO.
  * 
  * @author Mark Hiner
  */
@@ -42,7 +42,7 @@ public class T2aUntypedComponents {
 		// reader. This glossed over the individual steps of opening an image, which
 		// can also be accomplished manually through the SCIFIO components.
 
-		// As always, we create a context and sample image path first
+		// As always, we create a context and sample image path first.
 		final SCIFIO scifio = new SCIFIO();
 		final String sampleImage =
 			"8bit-signed&pixelType=int8&sizeZ=3&sizeC=5&sizeT=7&sizeY=50.fake";
@@ -54,24 +54,23 @@ public class T2aUntypedComponents {
 		// If we had been given a Format instead of the context, we can manually
 		// check it's compatibility through a Checker component.
 		final Checker checker = format.createChecker();
-		System.out.println("Is compatibile: " + checker.isFormat(sampleImage));
+		System.out.println("Is compatible: " + checker.isFormat(sampleImage));
 
 		// Typically the first thing we want to do, after confirming we have a
-		// Format that can support an image, is parse the Metadata of that image
+		// Format that can support an image, is parse the Metadata of that image.
 		final Parser parser = format.createParser();
 		final Metadata meta = parser.parse(sampleImage);
 
 		// Metadata is used by other components, such as Readers, Writers, and
-		// Translators
-		// to open, save, and convert - respectively - image information. Assuming
-		// we're
-		// going to open an image, we'll need to initialize a reader now.
+		// Translators to open, save, and convert -- respectively -- image
+		// information. Assuming we're going to open an image, we'll need to
+		// initialize a reader now.
 		Reader reader = format.createReader();
 
-		// Tells the reader which metadata object to use while reading
+		// Tells the reader which metadata object to use while reading.
 		reader.setMetadata(meta);
 
-		// Tells the reader which image source to read from
+		// Tells the reader which image source to read from.
 		reader.setSource(sampleImage);
 
 		// It is important to note that by using components all originating from
@@ -79,10 +78,10 @@ public class T2aUntypedComponents {
 		// compatible with each other.
 		// A method that accepted multiple individual components and expected them
 		// to be compatible may not be particularly useful. But note that it would
-		// also be unnecessary - any component can find its parent Format:
+		// also be unnecessary -- any component can find its parent Format:
 
-		// both of these paths lead to the same Format, and will create a Reader
-		// capable of reading the parsed Metadata
+		// Both of these paths lead to the same Format, and will create a Reader
+		// capable of reading the parsed Metadata.
 		reader = parser.getFormat().createReader();
 		reader =
 			scifio.format().getFormatFromParser(parser.getClass()).createReader();
