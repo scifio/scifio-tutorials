@@ -2,7 +2,7 @@
  * #%L
  * SCIFIO tutorials for core and plugin use.
  * %%
- * Copyright (C) 2011 - 2013 Open Microscopy Environment:
+ * Copyright (C) 2011 - 2014 Open Microscopy Environment:
  * 	- Board of Regents of the University of Wisconsin-Madison
  * 	- Glencoe Software, Inc.
  * 	- University of Dundee
