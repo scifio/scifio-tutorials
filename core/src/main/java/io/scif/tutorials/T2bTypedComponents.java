@@ -41,7 +41,7 @@ public class T2bTypedComponents {
 
 		final SCIFIO scifio = new SCIFIO();
 		final String sampleImage =
-			"8bit-unsigned&pixelType=uint8&sizeZ=3&sizeC=3&rgb=3&indexed=true&sizeT=7&sizeY=50.fake";
+			"8bit-unsigned&pixelType=uint8&indexed=true&planarDims=3&lengths=50,50,3&axes=X,Y,Channel.fake";
 
 		// This time, since we know we have a .fake image, we'll get a handle to the
 		// Fake format.

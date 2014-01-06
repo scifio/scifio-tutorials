@@ -42,7 +42,7 @@ public class T1cSavingImagePlanes {
 
 		final SCIFIO scifio = new SCIFIO();
 		final String sampleImage =
-			"8bit-signed&pixelType=int8&sizeZ=3&sizeC=5&sizeT=7&sizeY=50&sizeX=50.fake";
+			"8bit-signed&pixelType=int8&lengths=50,50,3,5,7&axes=X,Y,Z,Channel,Time.fake";
 
 		// We'll need a path to write to
 		final String outPath = "SCIFIOTutorial.png";

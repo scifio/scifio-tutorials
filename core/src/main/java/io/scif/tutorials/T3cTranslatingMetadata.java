@@ -31,7 +31,6 @@ import java.util.Arrays;
 import net.imglib2.display.ColorTable;
 import net.imglib2.display.ColorTable8;
 
-import org.scijava.plugin.Attr;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -56,7 +55,7 @@ public class T3cTranslatingMetadata {
 		// As usual, we start by creating a SCIFIO and our trusty sample image.
 		final SCIFIO scifio = new SCIFIO();
 		final String sampleImage =
-			"8bit-signed&pixelType=uint8&indexed=true&rgb=3&sizeZ=3&sizeC=3&sizeT=7&sizeY=50.fake";
+			"8bit-unsigned&pixelType=uint8&indexed=true&planarDims=3&lengths=50,50,3&axes=X,Y,Channel.fake";
 
 		// First let's get a handle on a compatible Format, and parse the sample
 		// image's Metadata
@@ -120,12 +119,7 @@ public class T3cTranslatingMetadata {
 	 * this Translator could not be returned by Format#findSource or findDest translator.
 	 * 
 	 */
-	@Plugin(type = Translator.class,
-		attrs = {
-			@Attr(name = MischeviousTranslator.DEST,
-				value = FakeFormat.Metadata.CNAME),
-			@Attr(name = MischeviousTranslator.SOURCE,
-				value = FakeFormat.Metadata.CNAME) })
+	@Plugin(type = Translator.class)
 	public static class MischeviousTranslator extends
 		AbstractTranslator<FakeFormat.Metadata, FakeFormat.Metadata>
 	{
@@ -152,11 +146,12 @@ public class T3cTranslatingMetadata {
 			final ColorTable ct = ((FakeFormat.Metadata) source).getColorTable(0, 0);
 			final byte[][] bytes = new byte[ct.getComponentCount()][ct.getLength()];
 
-			for (final byte[] b : bytes)
+			for (final byte[] b : bytes) {
 				Arrays.fill(b, (byte) 0x2a);
+			}
 
-			((FakeFormat.Metadata) dest).setLut(new ColorTable[] { new ColorTable8(
-				bytes) });
+			((FakeFormat.Metadata) dest).setLuts(new ColorTable[][] {{ new ColorTable8(
+				bytes) }});
 		}
 
 		// This method is the actual workhorse of the Translator. Using the
@@ -168,6 +163,16 @@ public class T3cTranslatingMetadata {
 			final FakeFormat.Metadata dest)
 		{
 			System.out.println("Translating source: " + source + " to dest: " + dest);
+		}
+
+		@Override
+		public Class<? extends Metadata> source() {
+			return FakeFormat.Metadata.class;
+		}
+
+		@Override
+		public Class<? extends Metadata> dest() {
+			return FakeFormat.Metadata.class;
 		}
 	}
 }

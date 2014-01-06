@@ -18,6 +18,7 @@
 package io.scif.tutorials;
 
 import io.scif.FormatException;
+import io.scif.ImageMetadata;
 import io.scif.Metadata;
 import io.scif.Reader;
 import io.scif.SCIFIO;
@@ -41,7 +42,7 @@ public class T1bReadingTiles {
 		final SCIFIO scifio = new SCIFIO();
 
 		// This time we're going to set up a huge image path
-		final String hugeImage = "hugePlane&sizeX=70000&sizeY=80000.fake";
+		final String hugeImage = "hugePlane&lengths=70000,80000.fake";
 
 		// We initialize a reader as we did before
 		final Reader reader = scifio.initializer().initializeReader(hugeImage);
@@ -72,25 +73,26 @@ public class T1bReadingTiles {
 
 		for (int i = 0; i < reader.getImageCount(); i++) {
 
+			ImageMetadata iMeta = meta.get(i);
 			// These methods will compute the optimal width to use with
 			// reader#openPlane
-			final int optimalTileWidth = reader.getOptimalTileWidth(i);
-			final int optimalTileHeight = reader.getOptimalTileHeight(i);
+			final long optimalTileWidth = reader.getOptimalTileWidth(i);
+			final long optimalTileHeight = reader.getOptimalTileHeight(i);
 
 			// Then we need to figure out how many tiles are actually present in a
 			// plane,
 			// given the tile height and width
-			final int tilesWide =
-				(int) Math.ceil((double) meta.getAxisLength(i, Axes.X) /
+			final long tilesWide =
+				(long) Math.ceil((double) iMeta.getAxisLength(Axes.X) /
 					optimalTileWidth);
-			final int tilesHigh =
-				(int) Math.ceil((double) meta.getAxisLength(i, Axes.Y) /
+			final long tilesHigh =
+				(long) Math.ceil((double) iMeta.getAxisLength(Axes.Y) /
 					optimalTileHeight);
 
-			int x, y = 0;
+			long x, y = 0;
 
 			// now we can open each tile, one at a time, for each plane in this image
-			for (int j = 0; j < meta.getPlaneCount(i); j++) {
+			for (int j = 0; j < iMeta.getPlaneCount(); j++) {
 				for (int tileX = 0; tileX < tilesWide; tileX++) {
 					for (int tileY = 0; tileY < tilesHigh; tileY++) {
 
@@ -101,18 +103,22 @@ public class T1bReadingTiles {
 						// and then we compute the actual dimensions of the current tile, in
 						// case
 						// the image was not perfectly divisible by the optimal dimensions.
-						final int actualTileWidth =
-							Math.min(optimalTileWidth, meta.getAxisLength(i, Axes.X) - x);
-						final int actualTileHeight =
-							Math.min(optimalTileHeight, meta.getAxisLength(i, Axes.Y) - y);
+						final long actualTileWidth =
+							Math.min(optimalTileWidth, iMeta.getAxisLength(Axes.X) - x);
+						final long actualTileHeight =
+							Math.min(optimalTileHeight, iMeta.getAxisLength(Axes.Y) - y);
 
 						// Finally we open the current plane, using an openPlane signature
 						// that allows us
 						// to specify a sub-region of the current plane.
 						// FIXME: uncomment these lines of code after the first time you run
 						// this tutorial.
-//            System.out.println("Image:" + i + " Plane:" + j + " Tile:" + (tileX + tileY) + " -- "
-//                + reader.openPlane(i, j, x, y, actualTileWidth, actualTileHeight));
+						// *** UNCOMMENT FOLLOWING LINES ***
+//						System.out.println("Image:" + i + " Plane:" + j + " Tile:" + 
+//						((tileX * tilesWide) + tileY + 1) + " -- " +
+//						reader.openPlane(i, j, new long[]{x, y},
+//						new long[]{actualTileWidth, actualTileHeight}));
+						// ** STOP UNCOMMENTING LINES ***
 
 						// Here, if we saved a reference to the returned Plane, we would do
 						// any necessary

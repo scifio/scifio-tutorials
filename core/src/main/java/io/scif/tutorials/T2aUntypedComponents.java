@@ -45,7 +45,7 @@ public class T2aUntypedComponents {
 		// As always, we create a context and sample image path first.
 		final SCIFIO scifio = new SCIFIO();
 		final String sampleImage =
-			"8bit-signed&pixelType=int8&sizeZ=3&sizeC=5&sizeT=7&sizeY=50.fake";
+			"8bit-signed&pixelType=int8&lengths=50,50,3,5,7&axes=X,Y,Z,Channel,Time.fake";
 
 		// This time we'll get a handle on the Format itself, which will allow us
 		// to create the additional components.

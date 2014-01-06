@@ -74,7 +74,7 @@ public class T1aIntroToSCIFIO {
 
 		// The path to our sample image
 		final String sampleImage =
-			"8bit-signed&pixelType=int8&sizeZ=3&sizeC=5&sizeT=7&sizeY=50.fake";
+			"8bit-signed&pixelType=int8&lengths=50,50,3,5,7&axes=X,Y,Z,Channel,Time.fake";
 
 		// Planes read from images in SCIFIO are returned as io.scif.Plane
 		// objects, agnostic of the underlying data type (e.g. byte[] or
@@ -112,8 +112,9 @@ public class T1aIntroToSCIFIO {
 		// In Bio-Formats 4.X, planes were returned as byte[]'s. This data
 		// structure is still available in SCIFIO:
 
-		for (final Plane p : planes)
+		for (final Plane p : planes) {
 			displayImage(p.getBytes());
+		}
 	}
 
 	// Dummy method for demonstrating io.scif.Plane#getBytes()

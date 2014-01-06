@@ -234,10 +234,10 @@ public class T3bCustomFormats {
 			// attempt to update that plane (e.g. via plane.populate() calls)
 			// and avoid instantiating new planes. This allows a single Plane
 			// instance to be reused through many openPlane calls.
-			public ByteArrayPlane openPlane(final int imageIndex,
-				final int planeIndex, final ByteArrayPlane plane, final int x,
-				final int y, final int w, final int h) throws FormatException,
-				IOException
+			@Override
+			public ByteArrayPlane openPlane(int imageIndex, long planeIndex,
+				ByteArrayPlane plane, long[] planeMin, long[] planeMax)
+				throws FormatException, IOException
 			{
 				// update the data by reference
 				final byte[] bytes = plane.getData();
@@ -254,9 +254,9 @@ public class T3bCustomFormats {
 		// Plane.getBytes() method.
 		public static class Writer extends AbstractWriter<Metadata> {
 
-			public void savePlane(final int imageIndex, final int planeIndex,
-				final Plane plane, final int x, final int y, final int w, final int h)
-				throws FormatException, IOException
+			@Override
+			public void savePlane(int imageIndex, long planeIndex, Plane plane,
+				long[] planeMin, long[] planeMax) throws FormatException, IOException
 			{
 				final byte[] bytes = plane.getBytes();
 

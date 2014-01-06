@@ -80,7 +80,7 @@ public class T3aDiscoveryTutorial {
 
 		// Now let's play with a sample image path
 		final String sampleImage =
-			"8bit-signed&pixelType=int8&sizeZ=3&sizeC=5&sizeT=7&sizeY=50.fake";
+			"8bit-signed&pixelType=int8&lengths=50,50,3,5,7&axes=X,Y,Z,Channel,Time.fake";
 
 		// We can use our FormatService to find an appropriate Format plugin:
 		final Format format = fService.getFormat(sampleImage);
