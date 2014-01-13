@@ -15,7 +15,7 @@
  * #L%
  */
 
-package io.scif.tutorials;
+package io.scif.tutorials.core;
 
 import io.scif.ByteArrayPlane;
 import io.scif.FormatException;
@@ -27,7 +27,9 @@ import io.scif.formats.FakeFormat.Reader;
 import java.io.IOException;
 
 /**
- * Demonstrates accessing type-specific SCIFIO components.
+ * In {@link T2aUntypedComponents} we looked at using the general,
+ * interface-level SCIFIO components. Now we'll look at how to get access
+ * to components with stronger typing.
  * 
  * @author Mark Hiner
  */
@@ -54,13 +56,11 @@ public class T2bTypedComponents {
 		// 2 - we didn't invoke the FakeFormat's constructor.
 		// new FakeFormat() would have given us a Format instance with no context.
 		// new FakeFormat(scifio) would have given us a Format with the correct
-		// context,
-		// but wouldn't update the context's FakeFormat singleton.
+		// context, but wouldn't update the context's FakeFormat singleton. So it
+		// would basically be an orphan Format instance.
 		// Formats have no state, so as long as you want a Format that was
-		// discovered,
-		// you should access it via the desired context. We will discuss manual
-		// Format
-		// instantiation in the CustomFormats tutorial.
+		// discovered as a plugin, you should access it via the desired context. We
+		// will discuss manual Format instantiation in the CustomFormats tutorial.
 
 		// Formats provide access to all other components, and with a typed Format
 		// you can create typed components:
@@ -73,10 +73,15 @@ public class T2bTypedComponents {
 
 		final FakeFormat.Metadata meta = parser.parse(sampleImage);
 
+		// getColorTable isn't a part of the Metadata API, but since
+		// FakeFormat.Metadata implements HasColorTable, we have access to this
+		// method.
 		System.out.println("Color table: " + meta.getColorTable(0, 0));
 
 		reader.setMetadata(meta);
 
+		// Typically we just get a Plane instance back from openPlane. But now we
+		// know we're working with ByteArrayPlanes.
 		final ByteArrayPlane plane = reader.openPlane(0, 0);
 
 		System.out.println("Byte array plane: " + plane.getBytes().length);

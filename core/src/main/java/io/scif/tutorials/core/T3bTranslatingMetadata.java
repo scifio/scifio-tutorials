@@ -15,7 +15,7 @@
  * #L%
  */
 
-package io.scif.tutorials;
+package io.scif.tutorials.core;
 
 import io.scif.AbstractTranslator;
 import io.scif.Format;
@@ -26,10 +26,6 @@ import io.scif.Translator;
 import io.scif.formats.FakeFormat;
 
 import java.io.IOException;
-import java.util.Arrays;
-
-import net.imglib2.display.ColorTable;
-import net.imglib2.display.ColorTable8;
 
 import org.scijava.plugin.Plugin;
 
@@ -38,19 +34,22 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Mark Hiner
  */
-public class T3cTranslatingMetadata {
+public class T3bTranslatingMetadata {
 
 	public static void main(final String... args) throws FormatException,
 		IOException
 	{
 		// In the CustomFormats tutorial we demonstrated the process of defining
 		// a custom image format and making it available to the SCIFIO framework.
-		// We didn't say much about the Translators then, but they are critically
-		// important. A format can have any number of Translators, to and from
-		// other Metadata types, and at a minimum must define a translator to
-		// DatasetMetadata - which provides basic image information, such as
-		// height, width, etc. Without translators, a Format is isolated and
-		// can not be converted to other (e.g. open-source) formats.
+		// We mentioned that Translators are defined in a Format when there is a
+		// Writer, as we will then need to translate to this format to write out
+		// data. However, any number of Translators can be defined, to and from
+		// other Metadata types. Of course, we don't want a translator between
+		// EVERY format pair. Instead, a major goal of SCIFIO is to provide and
+		// facilitate exchange metadata formats, such that translators are defined
+		// to and from existing Metadata classes and this open exchange metadata.
+		// In this tutorial we therefore explore the use of Translators as stand-
+		// alone classes.
 
 		// As usual, we start by creating a SCIFIO and our trusty sample image.
 		final SCIFIO scifio = new SCIFIO();
@@ -63,39 +62,34 @@ public class T3cTranslatingMetadata {
 		final Metadata input = format.createParser().parse(sampleImage);
 
 		// Now that we have some Metadata, let's find the MischeviousTranslator we
-		// defined
-		// below.
+		// defined below.
 		Translator t = null;
 
 		// The translators() method in the SCIFIO service returns a
-		// TranslatorService
-		// instance, which can be used to find compatible Translators between the
-		// provided metadata types. In this case, since our sample translator
-		// goes to and from FakeFormat.Metadata, we provide this type as
-		// both parameters to the findTranslator method.
+		// TranslatorService instance, which can be used to find compatible
+		// Translators between the provided metadata types. In this case, since our
+		// sample translator goes to and from FakeFormat.Metadata, we provide this
+		// type as both parameters to the findTranslator method.
+		// The final parameter, "true", is used to indicate that we want an
+		// EXACT match. That is, it must be capable of translating the
+		// concrete types of the given parameters.
 		t = scifio.translator().findTranslator(input, input, true);
 
 		// To try the MischeviousTranslator out, let's get another copy
 		// of this image's Metadata.
 		final Metadata output = format.createParser().parse(sampleImage);
 
-		// Then we translate...
+		// Then we translate
 		t.translate(input, output);
-
-		// ... and observe the results
-		System.out.println("100th element of input color table: " +
-			((FakeFormat.Metadata) input).getColorTable(0, 0).get(0, 100));
-
-		System.out.println("100th element of output color table: " +
-			((FakeFormat.Metadata) output).getColorTable(0, 0).get(0, 100));
 
 		// ------------------------------------------------------------------------
 		// COMPARISON WITH BIO-FORMATS 4.X
 		// In Bio-Formats 4.X, there was a single open-exchange format: OME-TIFF.
 		// To convert between image formats, common metadata was stored in
 		// loci.formats.CoreMetadata, and format-specific metadata was converted to
-		// OME-XML which could then be used to write an OME-TIFF out.
-		// In SCIFIO, we provide io.scif.DatasetMetadata to record certain
+		// OME-XML which could then be used to write an OME-TIFF out. This
+		// implementation was handled exclusively in the initFile method of each
+		// reader. In SCIFIO, we provide io.scif.DatasetMetadata to record certain
 		// common image characteristics, but any number of open-exchange formats
 		// could be devised. It would just be a matter of defining translators
 		// for converting from other image formats to the open format.
@@ -107,17 +101,14 @@ public class T3cTranslatingMetadata {
 	}
 
 	/*
-	 * For translation to be as extensible as possible, individual Translators can
-	 * be discovered by SezPoz. When a Format invokes its findSource or findDest
-	 * Translator methods it triggers the SezPoz search. This allows individual
-	 * Formats to be customized via plug-in, and facilitates Translator-only
-	 * plug-ins that introduce new open-exchange formats.
-	 * 
-	 * Note the two annotation attributes: Translator.DEST is used to determine the
-	 * format of the input Metadata of this Translator's translate() method,
-	 * and Translator.SOURCE is a key for the output type. Without these annotations,
-	 * this Translator could not be returned by Format#findSource or findDest translator.
-	 * 
+	 * Our sample Translator class. Note that this class stands alone, and does
+	 * need to be a nested class of one format. Image, for example, it translated
+	 * between APNG metadata and Fake metadata - it would not make sense to store
+	 * the translator in one class or another.
+	 *
+	 * For the purpose of this tutorial, we will translate from Fake metadata
+	 * to Fake metadata. This is highly redundant and there is almost never a
+	 * reason to implement such a translator.
 	 */
 	@Plugin(type = Translator.class)
 	public static class MischeviousTranslator extends
@@ -126,42 +117,17 @@ public class T3cTranslatingMetadata {
 
 		// -- Translator API methods --
 
-		// Objects are passed
-		// by reference to allow non-destructive translation, so multiple
-		// translation calls could be invoked in succession to collaboratively
-		// populate a single Metadata object.
-		// If you prefer to ensure your Metadata is fresh, call the destination's
-		// reset() method.
-		@Override
-		public void translate(final Metadata source, final Metadata dest) {
-			System.out.println("In the Translate(Metadata, Metadata) method");
-
-			super.translate(source, dest);
-
-			System.out
-				.println("Translation complete! But we can do post-translation actions still.");
-
-			// And now we're feeling particularly chaotic and decide to mangle
-			// the output's ColorTable, filling it with useless values.
-			final ColorTable ct = ((FakeFormat.Metadata) source).getColorTable(0, 0);
-			final byte[][] bytes = new byte[ct.getComponentCount()][ct.getLength()];
-
-			for (final byte[] b : bytes) {
-				Arrays.fill(b, (byte) 0x2a);
-			}
-
-			((FakeFormat.Metadata) dest).setLuts(new ColorTable[][] {{ new ColorTable8(
-				bytes) }});
-		}
-
-		// This method is the actual workhorse of the Translator. Using the
-		// protected
-		// and properly type cast fields, source and dest, we can perform
-		// translation.
+		/*
+		 * Note that Metadata parameters are passed by reference, to allow
+		 * non-destructive translation. Multiple translation calls could actually be
+		 * invoked in succession to collaboratively populate a single Metadata
+		 * object.
+		 */
 		@Override
 		protected void typedTranslate(final FakeFormat.Metadata source,
 			final FakeFormat.Metadata dest)
 		{
+			// Here we would put our translation implementation, as in T3a.
 			System.out.println("Translating source: " + source + " to dest: " + dest);
 		}
 

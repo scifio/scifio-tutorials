@@ -15,18 +15,20 @@
  * #L%
  */
 
-package io.scif.tutorials;
+package io.scif.tutorials.core;
 
 import io.scif.AbstractChecker;
 import io.scif.AbstractFormat;
 import io.scif.AbstractMetadata;
 import io.scif.AbstractParser;
+import io.scif.AbstractTranslator;
 import io.scif.AbstractWriter;
 import io.scif.ByteArrayPlane;
 import io.scif.ByteArrayReader;
 import io.scif.Field;
 import io.scif.Format;
 import io.scif.FormatException;
+import io.scif.ImageMetadata;
 import io.scif.Plane;
 import io.scif.SCIFIO;
 import io.scif.io.RandomAccessInputStream;
@@ -42,7 +44,7 @@ import org.scijava.plugin.Plugin;
  * 
  * @author Mark Hiner
  */
-public class T3bCustomFormats {
+public class T3aCustomFormats {
 
 	// Before looking at the main method, take a look at the SampleFormat defined
 	// below.
@@ -52,61 +54,36 @@ public class T3bCustomFormats {
 		// In Bio-Formats 4.X, adding support for a new format required modifying
 		// a hard-coded list of readers or writers. This could be a significant
 		// barrier for including new formats.
-		// In SCIFIO, we allow formats to be discovered automatically via Sezpoz
-		// (sezpoz.java.net) or manually added to a context.
+		// In SCIFIO, we allow formats to be discovered automatically via 
+		// annotation processing, or by manually adding it to a Context.
 		// ------------------------------------------------------------------------
 
-		// Let's start by creating a new context as we have in the other tutorials:
+		// Let's start by creating a new context as we have in the other tutorials.
+		// Creating a SCIFIO implicitly creates a new Context. During the
+		// construction of this Context, services are loaded and plugins discovered
+		// automatically. See the Context class documentation for more information
+		// on controlling Context creation.
 		final SCIFIO scifio = new SCIFIO();
 
 		// ... and a sample image path:
 		final String sampleImage = "notAnImage.scifiosmpl";
 
-		// When the Context was created, it automatically used SezPoz to discover
-		// all available Formats. As SampleFormat below was annotated as a @Plugin
-		// it should be available to our context, directly:
-
+		// As SampleFormat below was annotated as a @Plugin it should be available
+		// to our context:
 		final Format format = scifio.format().getFormat(sampleImage);
+
+		// Verify that we found the format plugin
 		System.out.println("SampleFormat found via FormatService: " +
 			(format != null));
-
-		// Using the FormatService provides access to a consistent singleton Format
-		// within the context.
-
-		// Next let's suspend our disbelief and imagine that the SampleFormat was
-		// not annotated and thus not discovered automatically when constructing
-		// a context:
-
-		final SampleFormat sFormat = new SampleFormat();
-
-		// It may be tempting to call sFormat.setContext at this point to
-		// populate its context. But what we really want to do is ensure the
-		// context's FormatService knows about our sFormat:
-
-		scifio.format().addFormat(sFormat);
-
-		// Now our SampleFormat will be properly contextualized, and
-		// this particular instance will serve as a singleton within the
-		// FormatService of this context.
-
-		// In closing, notice that the SampleFormat we defined lacks any
-		// Translator objects. Translators would be defined within a Format
-		// and annotated with @DiscoverableTranslator annotations. Translators
-		// encode a many : many relationship between Metadata classes, and thus
-		// can not be captured in a generic parameter, nor made mandatory.
-		// However, a format without translators is fairly useless as no common
-		// information can be discerned (e.g. via DatasteMetadata, because there
-		// is no format:DatasetMetadata translator).
-		// See the TranslatingMetadata tutorial for more information.
 	}
 
 	/**
 	 * This is a non-functional Format which adds "support" for a fictional
 	 * ".scifiosmpl" image type.
 	 * <p>
-	 * Note the annotation: Plugin. All Formats are plugins for the SciJava
-	 * Context, which allows them to be automatically discovered and instantiated
-	 * as singletons whenever a Context is created.
+	 * Note the annotation: {@link Plugin}. All Formats are plugins for the
+	 * SciJava Context, which allows them to be automatically discovered and
+	 * instantiated as singletons whenever a Context is created.
 	 * </p>
 	 * <p>
 	 * Contexts also use a special type of plugin, Service, for performing
@@ -119,12 +96,6 @@ public class T3bCustomFormats {
 	@Plugin(type = Format.class)
 	public static class SampleFormat extends AbstractFormat {
 
-		// Note that we had to define each class that would be used by this Format.
-		// Eventually this process will be simplified, with default implementations
-		// for each component, so only components which will be over-written will
-		// need to be defined (e.g. there's no reason to define a Writer for a
-		// proprietary image format).
-
 		// -- Format API Methods --
 
 		// A lot of work is done for you in the AbstractFormat and Abstact component
@@ -132,36 +103,25 @@ public class T3bCustomFormats {
 		// defining a new Format.
 
 		// First we have to declare a name for our Format.
+		@Override
 		public String getFormatName() {
 			return "Sample data";
 		}
 
 		// Then we need to register what suffixes our Format is capable of opening.
 		// Note that you shouldn't put a separator ('.') in the extension Strings.
+		@Override
 		public String[] getSuffixes() {
 			return new String[] { "scifiosmpl" };
 		}
 
-		// Finally we specify what classes will be associated with this Format.
-		// SCIFIO convention is to implement these as nested classes within
-		// the owning Format, so related components are physically stored
-		// together. Any component type not declared here will revert to
-		// a Default implementation (e.g. io.scif.DefaultWriter). You should
-		// look at the Default implementations in io.scif and to determine
-		// which of these are sufficient for your needs.
-		// In this tutorial, we will provide examples of each component type,
-		// but note that we have not included our Checker in this class list
-		// - thus the DefaultChecker implementation will be used by this
-		// format (which performas basic extension checking).
-		public Class<?>[] getCustomClasses() {
-			return new Class<?>[] { Metadata.class, Parser.class, Reader.class,
-				Writer.class };
-		}
+		// *** MANDATORY COMPONENTS ***
 
-		// -- Nested classes --
-
-		// Metadata doesn't have any methods that need to be implemented, it
-		// is simply a bag of information.
+		// Metadata represents the format-specific metadata. It requires one
+		// method - populateImageMetadata - to be implemented. This method
+		// is invoked automatically after parsing the format-specific metadata,
+		// and should use this information to properly create and populate
+		// ImageMetadata objects.
 		public static class Metadata extends AbstractMetadata {
 
 			// The io.scif.Field notation flags fields as significant for a
@@ -181,24 +141,18 @@ public class T3bCustomFormats {
 			// during Parsing or Translation. From that metadata, ImageMetadata
 			// information, common to all formats - such as height, width, etc -
 			// can be populated here.
+			@Override
 			public void populateImageMetadata() {
 				color = "orange";
 			}
 		}
 
-		// The Parser also doesn't have any methods that explicitly
-		// need to be implemented. However, the Parser's job is to populate
-		// the Metadata objects properly. If Parser#parse is not
-		// overriddne, it will simply return an empty Metadata object.
+		// Much of the Parser functionality is taken care of in the abstract layer.
+		// The only method that needs to be implemented defines how an input
+		// stream should be read to determine its format-specific metadata.
 		public static class Parser extends AbstractParser<Metadata> {
 
-			// Here we can populate a metadata object. Note that #parse is overridden
-			// with a 1-parameter and 2-parameter version. The latter allows for non-
-			// destructive, chain parsing and re-use of a single Metadata object.
-			// Also note that whenever you see a chain of overridden signatures,
-			// e.g. String > File > RandomAccessInputStream, the RAIS is typically
-			// the "authoritative" signature and last to execute. Thus it is the only
-			// signature Overridden here.
+			// Here we can populate a metadata object with format-specific information
 			@Override
 			public void typedParse(final RandomAccessInputStream stream,
 				final Metadata meta) throws IOException, FormatException
@@ -214,6 +168,7 @@ public class T3bCustomFormats {
 		// suffixSufficient == true (it is true by default).
 		// If the suffix alone is insufficient for determining Format
 		// compatibility, that can be set here.
+		// Override the isFormat methods if necessary.
 		public static class Checker extends AbstractChecker {
 
 			public Checker() {
@@ -248,7 +203,11 @@ public class T3bCustomFormats {
 
 		}
 
-		// Like the Reader, a Writer must implement its savePlane method
+		// *** OPTIONAL COMPONENTS ***
+
+		// Writers are not required components. They should not be created for
+		// proprietary formats, but are good to implement for open formats.
+		// Similar to the Reader, a Writer must implement its savePlane method
 		// which writes the provided Plane object to disk. However, the
 		// type of Plane is irrelevant for Writers, thanks to the
 		// Plane.getBytes() method.
@@ -262,6 +221,45 @@ public class T3bCustomFormats {
 
 				System.out.println(bytes.length);
 			}
+		}
+
+		// Translators are not typically not required unless there is a
+		// corresponding Writer for a given format. Then SCIFIO needs to know
+		// how to convert other types of Metadata to the destination Format
+		// for output.
+		public static class Translator extends
+			AbstractTranslator<io.scif.Metadata, Metadata>
+		{
+
+			// The source and dest methods are used for finding matching Translators
+			// They require only trivial implementations.
+
+			@Override
+			public Class<? extends io.scif.Metadata> source() {
+				return io.scif.Metadata.class;
+			}
+
+			@Override
+			public Class<? extends io.scif.Metadata> dest() {
+				return Metadata.class;
+			}
+
+			// This method is functionally equivalent to the Parser#typedParse method.
+			// The goal of this method is to populate the format-specific information
+			// of the destination Metadata. However, instead of using an input stream,
+			// we are using a different Metadata as the source.
+			// The type of the source is unknown, so we rely on its ImageMetadata.
+			@Override
+			protected void typedTranslate(io.scif.Metadata source, Metadata dest) {
+				ImageMetadata iMeta = source.get(0);
+				if (iMeta.isIndexed()) {
+					dest.setColor("red");
+				}
+				else {
+					dest.setColor("blue");
+				}
+			}
+
 		}
 	}
 }

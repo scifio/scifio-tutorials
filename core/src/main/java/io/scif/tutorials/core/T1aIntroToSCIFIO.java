@@ -15,18 +15,14 @@
  * #L%
  */
 
-package io.scif.tutorials;
+package io.scif.tutorials.core;
 
-import io.scif.Format;
 import io.scif.FormatException;
 import io.scif.Plane;
 import io.scif.Reader;
 import io.scif.SCIFIO;
 
 import java.io.IOException;
-import java.util.Set;
-
-import org.scijava.Context;
 
 /**
  * An introduction to the SCIFIO API. Demonstrates basic plane reading.
@@ -38,20 +34,26 @@ public class T1aIntroToSCIFIO {
 	public static void main(final String... agrs) throws FormatException,
 		IOException
 	{
-		// The first step when working with SCIFIO is to create a context.
-		// This is an instance of io.scif.SCIFIO, created as follows:
+		// The most convenient way to program against the SCIFIO API is by using
+		// an io.scif.SCIFIO instance. This is basically a "SCIFIO lens" on an
+		// org.scijava.Context instance. There are several ways to create a SCIFIO
+		// instance, e.g. if you already have a Context available, but for now we'll
+		// assume we want a fresh Context.
 		SCIFIO scifio = new SCIFIO();
 
-		// The SCIFIO class is designed to be a convenience wrapper for an
-		// org.scijava.Context. In typical use you will may already have a context
-		// available. Instead of using the zero-parameter SCIFIO constructor,
-		// which creates a brand new context, you would construct it as follows:
-		final Context context = new Context(); // our pre-existing context
-		scifio = new SCIFIO(context);
+		// Let's look at a sample scenario where we have an image path and we just
+		// want to open the first 3 planes of a dataset as simply as possible:
 
-		// This context provides access to all supported Format types, which
-		// will allow corresponding images to be opened:
-		final Set<Format> formats = scifio.format().getAllFormats();
+		// The path to our sample image. Fake images are special because they don't
+		// exist on disk - they are defined purely by their file name -  so they're
+		// good for testing.
+		final String sampleImage =
+			"8bit-signed&pixelType=int8&lengths=50,50,3,5,7&axes=X,Y,Z,Channel,Time.fake";
+
+		// This method checks the Context used by our SCIFIO instance for all its
+		// known format plugins, and returns an io.scif.Reader capable of opening
+		// the specified image's planes.
+		final Reader reader = scifio.initializer().initializeReader(sampleImage);
 
 		// ------------------------------------------------------------------------
 		// COMPARISON WITH BIO-FORMATS 4.X
@@ -69,26 +71,13 @@ public class T1aIntroToSCIFIO {
 		// environments.
 		// ------------------------------------------------------------------------
 
-		// Let's look at a sample scenario where we have an image path and we just
-		// want to open the first 3 planes as simply as possible:
-
-		// The path to our sample image
-		final String sampleImage =
-			"8bit-signed&pixelType=int8&lengths=50,50,3,5,7&axes=X,Y,Z,Channel,Time.fake";
-
-		// Planes read from images in SCIFIO are returned as io.scif.Plane
+		// Here we open and "display" the actual planes.
+		for (int i = 0; i < 3; i++) {
+		// Pixels read from images in SCIFIO are returned as io.scif.Plane
 		// objects, agnostic of the underlying data type (e.g. byte[] or
 		// java.awt.BufferedImage)
-		final Plane[] planes = new Plane[3];
-
-		// This method tells the context to check all of its known formats and
-		// return an io.scif.Reader capable of opening the specified image's
-		// planes.
-		final Reader reader = scifio.initializer().initializeReader(sampleImage);
-
-		// Here we open the actual planes and store them for future use
-		for (int i = 0; i < planes.length; i++) {
-			planes[i] = reader.openPlane(0, i);
+			Plane plane = reader.openPlane(0, i);
+			displayImage(i, plane);
 		}
 
 		// ------------------------------------------------------------------------
@@ -100,25 +89,21 @@ public class T1aIntroToSCIFIO {
 		// except on components designed to hold state (such as Metadata).
 		// The data model used by SCIFIO follows the OME notation, that each path
 		// points to a "Dataset," which contains 1 or more "Images" and each image
-		// contains one or more "Planes" - typically planes are XY across some
-		// arbitrary number of dimensions.
+		// contains 1 or more "Planes" - typically planes are XY across some
+		// number of dimensions.
 		// In the openPlane call above, the Dataset is implicit (the "sampleImage")
 		// the first index specifies the image number, and the second index
 		// specifies the plane number - which would result in returning the
-		// first 3 C, Z or T planes depending on the ordering of the image.
+		// first 3 planes depending (whether these are Z, C, T, etc... slices 
+		// depends on the structure of the dataset).
 		// ------------------------------------------------------------------------
-
-		// Now that we have image planes, suppose we want to display them.
-		// In Bio-Formats 4.X, planes were returned as byte[]'s. This data
-		// structure is still available in SCIFIO:
-
-		for (final Plane p : planes) {
-			displayImage(p.getBytes());
-		}
 	}
 
 	// Dummy method for demonstrating io.scif.Plane#getBytes()
-	private static void displayImage(final byte[] bytes) {
-		System.out.println(bytes + " " + bytes.length);
+	private static void displayImage(final int index, final Plane plane) {
+		// All planes, regardless of type, can automatically convert their pixel data
+		// to a byte[].
+		System.out.println("plane " + index + ": " + plane + ", length: " +
+			plane.getBytes().length);
 	}
 }
