@@ -15,35 +15,35 @@
 	<url>http://scif.io/</url>
 	<inceptionYear>2011</inceptionYear>
 
-  <dependencies>
-    <dependency>
-      <groupId>${scifio.groupId}</groupId>
-      <artifactId>scifio</artifactId>
-      <version>${scifio.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${scifio.groupId}</groupId>
-      <artifactId>scifio-core-tutorials</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${bio-formats.groupId}</groupId>
-      <artifactId>loci-common</artifactId>
-      <version>${bio-formats.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${scifio.groupId}</groupId>
-      <artifactId>scifio-bf-compat</artifactId>
-      <version>${scifio-bf-compat.version}</version>
-    </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>${scifio.groupId}</groupId>
+			<artifactId>scifio</artifactId>
+			<version>${scifio.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${scifio.groupId}</groupId>
+			<artifactId>scifio-core-tutorials</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${bio-formats.groupId}</groupId>
+			<artifactId>loci-common</artifactId>
+			<version>${bio-formats.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${scifio.groupId}</groupId>
+			<artifactId>scifio-bf-compat</artifactId>
+			<version>${scifio-bf-compat.version}</version>
+		</dependency>
 
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.5.10</version>
-      <scope>runtime</scope>
-    </dependency>
-  </dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.10</version>
+			<scope>runtime</scope>
+		</dependency>
+	</dependencies>
 
 
 	<properties>

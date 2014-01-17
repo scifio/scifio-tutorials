@@ -15,13 +15,13 @@
 	<url>http://scif.io/</url>
 	<inceptionYear>2011</inceptionYear>
 
-  <dependencies>
-    <dependency>
-      <groupId>${scifio.groupId}</groupId>
-      <artifactId>scifio</artifactId>
-      <version>${scifio.version}</version>
-    </dependency>
-  </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>${scifio.groupId}</groupId>
+			<artifactId>scifio</artifactId>
+			<version>${scifio.version}</version>
+		</dependency>
+	</dependencies>
 
 	<properties>
 		<project.rootdir>${basedir}/..</project.rootdir>

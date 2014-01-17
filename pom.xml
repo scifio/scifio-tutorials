@@ -57,10 +57,10 @@
 	</build>
 
 	<licenses>
-    <license>
-      <name>Creative Commons License</name>
-      <distribution>repo</distribution>
-    </license>
+		<license>
+			<name>Creative Commons License</name>
+			<distribution>repo</distribution>
+		</license>
 	</licenses>
 
 	<organization>
