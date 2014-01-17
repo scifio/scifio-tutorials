@@ -12,8 +12,6 @@
 
 	<name>SCIFIO OME Tutorials</name>
 	<description>Tutorials on using the basic OME SCIFIO plugin.</description>
-	<url>http://scif.io/</url>
-	<inceptionYear>2011</inceptionYear>
 
 	<dependencies>
 		<dependency>
@@ -45,66 +43,9 @@
 		</dependency>
 	</dependencies>
 
-
 	<properties>
 		<project.rootdir>${basedir}/..</project.rootdir>
 	</properties>
-
-	<developers>
-		<developer>
-			<id>hinerm</id>
-			<name>Mark Hiner</name>
-			<email>hiner@wisc.edu</email>
-			<url>http://developer.imagej.net/users/hinerm</url>
-			<organization>UW-Madison LOCI</organization>
-			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>-6</timezone>
-		</developer>
-		<developer>
-			<id>curtis</id>
-			<name>Curtis Rueden</name>
-			<email>ctrueden@wisc.edu</email>
-			<url>http://loci.wisc.edu/people/curtis-rueden</url>
-			<organization>UW-Madison LOCI</organization>
-			<organizationUrl>http://loci.wisc.edu/</organizationUrl>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-			<timezone>-6</timezone>
-		</developer>
-	</developers>
-
-	<issueManagement>
-		<system>GitHub Issues</system>
-		<url>https://github.com/scifio/scifio-tutorials/issues</url>
-	</issueManagement>
-
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://jenkins.imagej.net/view/SCIFIO/</url>
-	</ciManagement>
-
-	<mailingLists>
-		<mailingList>
-			<name>SCIFIO</name>
-			<subscribe>http://scif.io/mailman/listinfo/scifio</subscribe>
-			<unsubscribe>http://scif.io/mailman/listinfo/scifio</unsubscribe>
-			<post>scifio@scif.io</post>
-			<archive>http://scif.io/pipermail/scifio/</archive>
-		</mailingList>
-	</mailingLists>
-
-	<scm>
-		<connection>scm:git:git://github.com/scifio/scifio-tutorials</connection>
-		<developerConnection>scm:git:git@github.com:scifio/scifio-tutorials</developerConnection>
-		<tag>HEAD</tag>
-		<url>http://github.com/scifio/scifio-tutorials</url>
-	</scm>
 
 	<!-- NB: for parent project -->
 	<repositories>
