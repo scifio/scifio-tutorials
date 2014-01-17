@@ -99,7 +99,7 @@
 
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/scifio/scifio/issues</url>
+		<url>https://github.com/scifio/scifio-tutorials/issues</url>
 	</issueManagement>
 
 	<ciManagement>
