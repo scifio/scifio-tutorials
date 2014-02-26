@@ -31,6 +31,7 @@ import io.scif.FormatException;
 import io.scif.ImageMetadata;
 import io.scif.Plane;
 import io.scif.SCIFIO;
+import io.scif.config.SCIFIOConfig;
 import io.scif.io.RandomAccessInputStream;
 
 import java.io.IOException;
@@ -109,9 +110,10 @@ public class T3aCustomFormats {
 		}
 
 		// Then we need to register what suffixes our Format is capable of opening.
-		// Note that you shouldn't put a separator ('.') in the extension Strings.
+		// Note that you shouldn't put a leading separator ('.') in the extension
+		// Strings.
 		@Override
-		public String[] getSuffixes() {
+		protected String[] makeSuffixArray() {
 			return new String[] { "scifiosmpl" };
 		}
 
@@ -155,7 +157,8 @@ public class T3aCustomFormats {
 			// Here we can populate a metadata object with format-specific information
 			@Override
 			public void typedParse(final RandomAccessInputStream stream,
-				final Metadata meta) throws IOException, FormatException
+				final Metadata meta, final SCIFIOConfig config) throws IOException,
+				FormatException
 			{
 				meta.setColor("blue");
 			}
@@ -167,13 +170,33 @@ public class T3aCustomFormats {
 		// default Checker implementation can always match suffixes as long as
 		// suffixSufficient == true (it is true by default).
 		// If the suffix alone is insufficient for determining Format
-		// compatibility, that can be set here.
-		// Override the isFormat methods if necessary.
+		// compatibility, that can be declared here.
 		public static class Checker extends AbstractChecker {
 
-			public Checker() {
-				suffixSufficient = true;
-				suffixNecessary = true;
+			// All the methods in this class are OPTIONAL overrides.
+			// You need to think about your format to determine what should be
+			// overridden.
+
+			// If matching a file extension is not sufficient to determine
+			// format compatibility, this method should return false.
+			@Override
+			public boolean suffixSufficient() {
+				return true;
+			}
+
+			// If matching a file extension is required to determine format
+			// compatibility, this method should return true.
+			@Override
+			public boolean suffixNecessary() {
+				return true;
+			}
+
+			// If you need to read from the actual input stream to determine
+			// format compatibility (e.g. there is a magic string, or similar)
+			// this method should be overridden.
+			@Override
+			public boolean isFormat(final RandomAccessInputStream stream) {
+				return false;
 			}
 		}
 
@@ -191,14 +214,22 @@ public class T3aCustomFormats {
 			// instance to be reused through many openPlane calls.
 			@Override
 			public ByteArrayPlane openPlane(int imageIndex, long planeIndex,
-				ByteArrayPlane plane, long[] planeMin, long[] planeMax)
-				throws FormatException, IOException
+				ByteArrayPlane plane, long[] planeMin, long[] planeMax,
+				SCIFIOConfig config) throws FormatException, IOException
 			{
 				// update the data by reference
 				final byte[] bytes = plane.getData();
 				Arrays.fill(bytes, 0, bytes.length, (byte) 0);
 
 				return plane;
+			}
+
+			// You must declare what domains your reader is associated with, based
+			// on the list of constants in io.scif.util.FormatTools.
+			// It is also sufficient to return an empty array here.
+			@Override
+			protected String[] createDomainArray() {
+				return new String[0];
 			}
 
 		}
@@ -213,13 +244,22 @@ public class T3aCustomFormats {
 		// Plane.getBytes() method.
 		public static class Writer extends AbstractWriter<Metadata> {
 
+			// Take a provided data plane, of specified dimensionality, and
+			// write it to the given indices on disk.
 			@Override
-			public void savePlane(int imageIndex, long planeIndex, Plane plane,
+			public void writePlane(int imageIndex, long planeIndex, Plane plane,
 				long[] planeMin, long[] planeMax) throws FormatException, IOException
 			{
 				final byte[] bytes = plane.getBytes();
 
 				System.out.println(bytes.length);
+			}
+
+			// If your writer supports a compression type, you can declare that here.
+			// Otherwise it is sufficient to return an empty String[]
+			@Override
+			protected String[] makeCompressionTypes() {
+				return new String[0];
 			}
 		}
 
