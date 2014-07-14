@@ -13,6 +13,18 @@
 	<name>SCIFIO OME Tutorials</name>
 	<description>Tutorials on using the basic OME SCIFIO plugin.</description>
 
+	<properties>
+		<project.rootdir>${basedir}/..</project.rootdir>
+	</properties>
+
+	<repositories>
+		<!-- NB: for parent project, in case of partial checkout -->
+		<repository>
+			<id>imagej.public</id>
+			<url>http://maven.imagej.net/content/groups/public</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -41,17 +53,5 @@
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
-
-	<properties>
-		<project.rootdir>${basedir}/..</project.rootdir>
-	</properties>
-
-	<repositories>
-		<!-- NB: for parent project, in case of partial checkout -->
-		<repository>
-			<id>imagej.public</id>
-			<url>http://maven.imagej.net/content/groups/public</url>
-		</repository>
-	</repositories>
 
 </project>

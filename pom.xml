@@ -16,16 +16,48 @@
 	<name>SCIFIO Tutorials</name>
 	<description>Tutorials on using the SCIFIO API and its plugins</description>
 	<inceptionYear>2011</inceptionYear>
+	<organization>
+		<name>SCIFIO</name>
+		<url>http://scif.io/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Creative Commons License</name>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 
 	<modules>
 		<module>core</module>
 		<module>ome</module>
 	</modules>
 
+	<scm>
+		<connection>scm:git:git://github.com/scifio/scifio-tutorials</connection>
+		<developerConnection>scm:git:git@github.com:scifio/scifio-tutorials</developerConnection>
+		<tag>HEAD</tag>
+		<url>http://github.com/scifio/scifio-tutorials</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/scifio/scifio-tutorials/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>http://jenkins.imagej.net/job/SCIFIO-tutorials/</url>
+	</ciManagement>
+
 	<properties>
 		<jai-imageio.version>1.0.1</jai-imageio.version>
 		<project.rootdir>${basedir}</project.rootdir>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>imagej.public</id>
+			<url>http://maven.imagej.net/content/groups/public</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>
@@ -40,41 +72,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<licenses>
-		<license>
-			<name>Creative Commons License</name>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-
-	<organization>
-		<name>SCIFIO</name>
-		<url>http://scif.io/</url>
-	</organization>
-
-	<issueManagement>
-		<system>GitHub Issues</system>
-		<url>https://github.com/scifio/scifio-tutorials/issues</url>
-	</issueManagement>
-
-	<ciManagement>
-		<system>Jenkins</system>
-		<url>http://jenkins.imagej.net/job/SCIFIO-tutorials/</url>
-	</ciManagement>
-
-	<scm>
-		<connection>scm:git:git://github.com/scifio/scifio-tutorials</connection>
-		<developerConnection>scm:git:git@github.com:scifio/scifio-tutorials</developerConnection>
-		<tag>HEAD</tag>
-		<url>http://github.com/scifio/scifio-tutorials</url>
-	</scm>
-
-	<repositories>
-		<repository>
-			<id>imagej.public</id>
-			<url>http://maven.imagej.net/content/groups/public</url>
-		</repository>
-	</repositories>
 
 </project>

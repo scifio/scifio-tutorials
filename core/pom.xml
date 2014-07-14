@@ -13,13 +13,6 @@
 	<name>SCIFIO Core Tutorials</name>
 	<description>Tutorials on using the basic SCIFIO API.</description>
 
-	<dependencies>
-		<dependency>
-			<groupId>io.scif</groupId>
-			<artifactId>scifio</artifactId>
-		</dependency>
-	</dependencies>
-
 	<properties>
 		<project.rootdir>${basedir}/..</project.rootdir>
 	</properties>
@@ -31,5 +24,12 @@
 			<url>http://maven.imagej.net/content/groups/public</url>
 		</repository>
 	</repositories>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.scif</groupId>
+			<artifactId>scifio</artifactId>
+		</dependency>
+	</dependencies>
 
 </project>
