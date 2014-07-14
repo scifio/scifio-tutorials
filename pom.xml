@@ -64,10 +64,10 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:git:git://github.com/scifio/scifio</connection>
-		<developerConnection>scm:git:git@github.com:scifio/scifio</developerConnection>
+		<connection>scm:git:git://github.com/scifio/scifio-tutorials</connection>
+		<developerConnection>scm:git:git@github.com:scifio/scifio-tutorials</developerConnection>
 		<tag>HEAD</tag>
-		<url>http://github.com/scifio/scifio</url>
+		<url>http://github.com/scifio/scifio-tutorials</url>
 	</scm>
 
 	<repositories>
