@@ -21,20 +21,17 @@
 		</dependency>
 
 		<dependency>
-			<groupId>${scifio.groupId}</groupId>
+			<groupId>io.scif</groupId>
 			<artifactId>scifio</artifactId>
-			<version>${scifio.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>${scifio.groupId}</groupId>
+			<groupId>io.scif</groupId>
 			<artifactId>scifio-bf-compat</artifactId>
-			<version>${scifio-bf-compat.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>${bio-formats.groupId}</groupId>
-			<artifactId>loci-common</artifactId>
-			<version>${bio-formats.version}</version>
+			<groupId>ome</groupId>
+			<artifactId>formats-common</artifactId>
 		</dependency>
 
 		<dependency>

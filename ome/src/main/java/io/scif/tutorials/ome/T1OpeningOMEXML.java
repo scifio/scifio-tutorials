@@ -20,7 +20,7 @@ package io.scif.tutorials.ome;
 import io.scif.FormatException;
 import io.scif.Metadata;
 import io.scif.SCIFIO;
-import io.scif.ome.xml.meta.OMEMetadata;
+import io.scif.ome.OMEMetadata;
 import io.scif.tutorials.core.T1dSavingImagePlanes;
 
 import java.io.IOException;

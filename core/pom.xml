@@ -15,9 +15,8 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>${scifio.groupId}</groupId>
+			<groupId>io.scif</groupId>
 			<artifactId>scifio</artifactId>
-			<version>${scifio.version}</version>
 		</dependency>
 	</dependencies>
 

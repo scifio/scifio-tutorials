@@ -20,12 +20,14 @@ package io.scif.tutorials.core;
 import io.scif.AbstractTranslator;
 import io.scif.Format;
 import io.scif.FormatException;
+import io.scif.ImageMetadata;
 import io.scif.Metadata;
 import io.scif.SCIFIO;
 import io.scif.Translator;
 import io.scif.formats.FakeFormat;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.scijava.plugin.Plugin;
 
@@ -124,7 +126,7 @@ public class T3bTranslatingMetadata {
 		 * object.
 		 */
 		@Override
-		protected void typedTranslate(final FakeFormat.Metadata source,
+		protected void translateImageMetadata(final List<ImageMetadata> source,
 			final FakeFormat.Metadata dest)
 		{
 			// Here we would put our translation implementation, as in T3a.

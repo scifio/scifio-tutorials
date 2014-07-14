@@ -36,6 +36,7 @@ import io.scif.io.RandomAccessInputStream;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import org.scijava.plugin.Plugin;
 
@@ -290,7 +291,9 @@ public class T3aCustomFormats {
 			// we are using a different Metadata as the source.
 			// The type of the source is unknown, so we rely on its ImageMetadata.
 			@Override
-			protected void typedTranslate(io.scif.Metadata source, Metadata dest) {
+			protected void translateImageMetadata(final List<ImageMetadata> source,
+				final Metadata dest)
+			{
 				ImageMetadata iMeta = source.get(0);
 				if (iMeta.isIndexed()) {
 					dest.setColor("red");
@@ -299,7 +302,6 @@ public class T3aCustomFormats {
 					dest.setColor("blue");
 				}
 			}
-
 		}
 	}
 }
