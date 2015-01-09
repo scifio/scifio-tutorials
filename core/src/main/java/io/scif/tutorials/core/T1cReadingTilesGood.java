@@ -26,7 +26,7 @@ import io.scif.SCIFIO;
 
 import java.io.IOException;
 
-import net.imglib2.meta.Axes;
+import net.imagej.axis.Axes;
 
 /**
  * Tutorial using the SCIFIO API to open a large image in tiles. Once planes
