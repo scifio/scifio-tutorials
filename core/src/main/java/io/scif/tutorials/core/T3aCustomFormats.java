@@ -120,11 +120,17 @@ public class T3aCustomFormats {
 
 		// *** MANDATORY COMPONENTS ***
 
-		// Metadata represents the format-specific metadata. It requires one
-		// method - populateImageMetadata - to be implemented. This method
-		// is invoked automatically after parsing the format-specific metadata,
-		// and should use this information to properly create and populate
-		// ImageMetadata objects.
+		// Metadata represents the format-specific metadata.
+		// Your Metadata class should be filled with fields whicih define the
+		// image format. For example, things like acquisition date, instrument,
+		// excitation levels, etc.
+		// Then in its implementation of populateImageMetadata, the format-
+		// specific metadata is converted to a generalized form to be consumed
+		// by other components (e.g. readers/writers).
+		// By exposing the rich metadata for a format, it gives components like
+		// Translators an opprotunity to preverse as much original information
+		// as possible - as once converted to ImageMetadata, it may not be
+		// obvious how to reconstruct the original format-specific metadata.
 		public static class Metadata extends AbstractMetadata {
 
 			// The io.scif.Field notation flags fields as significant for a
