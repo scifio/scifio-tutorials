@@ -79,8 +79,10 @@
 				<configuration>
 					<rules>
 						<requireReleaseDeps>
-							<!-- HACK tutorials are typically not released and thus are SNAPSHOT coupled.
-									 So, we effectively disable this test. -->
+							<!--
+							HACK: Tutorials are typically not released and thus are
+							SNAPSHOT coupled. So, we effectively disable this test.
+							-->
 							<onlyWhenRelease>true</onlyWhenRelease>
 						</requireReleaseDeps>
 					</rules>
