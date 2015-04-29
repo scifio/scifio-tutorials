@@ -1,3 +1,5 @@
+![](http://jenkins.imagej.net/job/SCIFIO-tutorials/lastBuild/badge/icon)
+
 This project contains example code for working with [SCIFIO][1].
 
 
