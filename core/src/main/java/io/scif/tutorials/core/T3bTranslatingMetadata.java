@@ -84,6 +84,8 @@ public class T3bTranslatingMetadata {
 		// Then we translate
 		t.translate(input, output);
 
+		scifio.getContext().dispose();
+
 		// ------------------------------------------------------------------------
 		// COMPARISON WITH BIO-FORMATS 4.X
 		// In Bio-Formats 4.X, there was a single open-exchange format: OME-TIFF.

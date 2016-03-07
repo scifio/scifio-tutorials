@@ -85,5 +85,7 @@ public class T2bTypedComponents {
 		final ByteArrayPlane plane = reader.openPlane(0, 0);
 
 		System.out.println("Byte array plane: " + plane.getBytes().length);
+
+		scifio.getContext().dispose();
 	}
 }

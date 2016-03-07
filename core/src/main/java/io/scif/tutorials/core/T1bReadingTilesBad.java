@@ -57,5 +57,7 @@ public class T1bReadingTilesBad {
 				reader.openPlane(i, j);
 			}
 		}
+
+		scifio.getContext().dispose();
 	}
 }

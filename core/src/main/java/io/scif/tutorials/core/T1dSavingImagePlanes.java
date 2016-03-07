@@ -84,6 +84,7 @@ public class T1dSavingImagePlanes {
 		// closed.
 		reader.close();
 		writer.close();
+		scifio.getContext().dispose();
 
 		// That's it! There should be a new SCIFIOTutorial image in whichever
 		// directory you ran this tutorial from.

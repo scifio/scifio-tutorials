@@ -97,6 +97,11 @@ public class T1aIntroToSCIFIO {
 		// first 3 planes depending (whether these are Z, C, T, etc... slices 
 		// depends on the structure of the dataset).
 		// ------------------------------------------------------------------------
+
+		// All SciJava applications that create a Context should dispose it before
+		// shutting down.
+		// See http://imagej.net/Writing_plugins#The_Context
+		scifio.getContext().dispose();
 	}
 
 	// Dummy method for demonstrating io.scif.Plane#getBytes()

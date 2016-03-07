@@ -69,6 +69,8 @@ public class T2aUntypedComponents {
 		// Tells the reader which metadata object to use while reading.
 		reader.setMetadata(meta);
 
+		scifio.getContext().dispose();
+
 		// ------------------------------------------------------------------------
 		// COMPARISON WITH BIO-FORMATS 4.X
 		// Bio-Formats 4.X readers used a setId method, which had to be called

@@ -474,6 +474,8 @@ public class T3aCustomFormats {
 		// Verify that we found the format plugin
 		System.out.println("SampleFormat found via FormatService: " +
 			(format != null));
+
+		scifio.getContext().dispose();
 	}
 
 }

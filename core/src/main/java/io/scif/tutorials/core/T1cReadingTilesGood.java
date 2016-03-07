@@ -111,5 +111,7 @@ public class T1cReadingTilesGood {
 				}
 			}
 		}
+
+		scifio.getContext().dispose();
 	}
 }

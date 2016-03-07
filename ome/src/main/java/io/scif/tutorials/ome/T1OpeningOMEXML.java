@@ -71,5 +71,6 @@ public class T1OpeningOMEXML {
 		// Now that we have our OME-XML we can print it:
 		final String xml = omexml.getRoot().dumpXML();
 		System.out.println(XMLTools.indentXML(xml, 3, true));
+		scifio.getContext().dispose();
 	}
 }
