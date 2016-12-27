@@ -1,6 +1,6 @@
 These license files are for use with the license-maven-plugin:
 
-    http://mojo.codehaus.org/license-maven-plugin/
+    http://www.mojohaus.org/license-maven-plugin/
 
 To update the LICENSE.txt files, run:
 
