@@ -1,4 +1,4 @@
-[![](http://jenkins.imagej.net/job/SCIFIO-tutorials/lastBuild/badge/icon)](http://jenkins.imagej.net/job/SCIFIO-tutorials/)
+[![](https://travis-ci.org/scifio/scifio-tutorials.svg?branch=master)](https://travis-ci.org/scifio/scifio-tutorials)
 
 This project contains example code for working with [SCIFIO][1].
 
