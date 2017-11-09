@@ -4,8 +4,6 @@ branches:
   only: master
 install: true
 script: ".travis/build.sh"
-after_success: ".travis/notify.sh Travis-Success"
-after_failure: ".travis/notify.sh Travis-Failure"
 env:
   global:
   - secure: gQUBYzYQIpdBNslZCxFtj2abiBamRePXRhI5iTnOf6pwkrtpAToJJhsEFQjFZjJ1yZGh3L/LKmqe9JuEzLJb5Ax1FEPdUDnv8g61zB79Dycg+Ll9ibTU6u85PNrTXTsaZNBYFx7JJlPl/crOlskmXGeBCtZ8YeEBAYaQ2xZl56s=
