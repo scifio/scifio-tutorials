@@ -3,22 +3,85 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>io.scif</groupId>
-		<artifactId>pom-scifio-tutorials</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<groupId>org.scijava</groupId>
+		<artifactId>pom-scijava</artifactId>
+		<version>19.2.0</version>
+		<relativePath />
 	</parent>
 
+	<groupId>io.scif</groupId>
 	<artifactId>scifio-ome-tutorials</artifactId>
 
 	<name>SCIFIO OME Tutorials</name>
 	<description>Tutorials on using the basic OME SCIFIO plugin.</description>
+	<url>https://github.com/scifio/scifio-tutorials</url>
+	<inceptionYear>2011</inceptionYear>
+	<organization>
+		<name>SCIFIO</name>
+		<url>http://scif.io/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>CC0 1.0 Universal License</name>
+			<url>http://creativecommons.org/publicdomain/zero/1.0/</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>ctrueden</id>
+			<name>Curtis Rueden</name>
+			<url>http://imagej.net/User:Rueden</url>
+			<roles>
+				<role>founder</role>
+				<role>lead</role>
+				<role>developer</role>
+				<role>debugger</role>
+				<role>reviewer</role>
+				<role>support</role>
+				<role>maintainer</role>
+			</roles>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>Mark Hiner</name>
+			<url>http://imagej.net/User:Hinerm</url>
+			<properties><id>hinerm</id></properties>
+			<roles><role>founder</role></roles>
+		</contributor>
+	</contributors>
+
+	<mailingLists>
+		<mailingList>
+			<name>ImageJ Forum</name>
+			<archive>http://forum.imagej.net/</archive>
+		</mailingList>
+	</mailingLists>
+
+	<scm>
+		<connection>scm:git:git://github.com/scifio/scifio-tutorials</connection>
+		<developerConnection>scm:git:git@github.com:scifio/scifio-tutorials</developerConnection>
+		<tag>HEAD</tag>
+		<url>http://github.com/scifio/scifio-tutorials</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/scifio/scifio-tutorials/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/scifio/scifio-tutorials</url>
+	</ciManagement>
 
 	<properties>
-		<project.rootdir>${basedir}/..</project.rootdir>
+		<license.licenseName>cc0</license.licenseName>
+		<license.copyrightOwners>N/A</license.copyrightOwners>
+		<license.projectName>SCIFIO library for reading and converting scientific file formats.</license.projectName>
 	</properties>
 
 	<repositories>
-		<!-- NB: for parent project, in case of partial checkout -->
 		<repository>
 			<id>imagej.public</id>
 			<url>http://maven.imagej.net/content/groups/public</url>
@@ -42,16 +105,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>ome</groupId>
-			<artifactId>formats-common</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.10</version>
-			<scope>runtime</scope>
+			<groupId>org.openmicroscopy</groupId>
+			<artifactId>ome-common</artifactId>
 		</dependency>
 	</dependencies>
-
 </project>

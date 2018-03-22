@@ -3,18 +3,20 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>io.scif</groupId>
-		<artifactId>pom-scifio</artifactId>
-		<version>10.0.0</version>
+		<groupId>org.scijava</groupId>
+		<artifactId>pom-scijava</artifactId>
+		<version>19.2.0</version>
 		<relativePath />
 	</parent>
 
-	<artifactId>pom-scifio-tutorials</artifactId>
+	<groupId>scifio-tutorials</groupId>
+	<artifactId>scifio-tutorials-aggregator</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>SCIFIO Tutorials</name>
-	<description>Tutorials on using the SCIFIO API and its plugins</description>
+	<description>A collection of tutorials for SCIFIO.</description>
+	<url>https://github.com/scifio/scifio-tutorials</url>
 	<inceptionYear>2011</inceptionYear>
 	<organization>
 		<name>SCIFIO</name>
@@ -22,10 +24,43 @@
 	</organization>
 	<licenses>
 		<license>
-			<name>Creative Commons License</name>
+			<name>CC0 1.0 Universal License</name>
+			<url>http://creativecommons.org/publicdomain/zero/1.0/</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+	<developers>
+		<developer>
+			<id>ctrueden</id>
+			<name>Curtis Rueden</name>
+			<url>http://imagej.net/User:Rueden</url>
+			<roles>
+				<role>founder</role>
+				<role>lead</role>
+				<role>developer</role>
+				<role>debugger</role>
+				<role>reviewer</role>
+				<role>support</role>
+				<role>maintainer</role>
+			</roles>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>Mark Hiner</name>
+			<url>http://imagej.net/User:Hinerm</url>
+			<properties><id>hinerm</id></properties>
+			<roles><role>founder</role></roles>
+		</contributor>
+	</contributors>
+
+	<mailingLists>
+		<mailingList>
+			<name>ImageJ Forum</name>
+			<archive>http://forum.imagej.net/</archive>
+		</mailingList>
+	</mailingLists>
 
 	<modules>
 		<module>core</module>
@@ -48,8 +83,9 @@
 	</ciManagement>
 
 	<properties>
-		<jai-imageio.version>1.0.1</jai-imageio.version>
-		<project.rootdir>${basedir}</project.rootdir>
+		<license.licenseName>cc0</license.licenseName>
+		<license.copyrightOwners>N/A</license.copyrightOwners>
+		<license.projectName>SCIFIO library for reading and converting scientific file formats.</license.projectName>
 	</properties>
 
 	<repositories>
@@ -58,37 +94,4 @@
 			<url>http://maven.imagej.net/content/groups/public</url>
 		</repository>
 	</repositories>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<configuration>
-					<licenseName>cc0</licenseName>
-					<licenseResolver>file://${project.rootdir}/license</licenseResolver>
-					<projectName>SCIFIO tutorials for core and plugin use.</projectName>
-					<organizationName>Open Microscopy Environment:
-	- Board of Regents of the University of Wisconsin-Madison
-	- Glencoe Software, Inc.
-	- University of Dundee</organizationName>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<configuration>
-					<rules>
-						<requireReleaseDeps>
-							<!--
-							HACK: Tutorials are typically not released and thus are
-							SNAPSHOT coupled. So, we effectively disable this test.
-							-->
-							<onlyWhenRelease>true</onlyWhenRelease>
-						</requireReleaseDeps>
-					</rules>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 </project>
