@@ -53,12 +53,12 @@ import org.scijava.plugin.Plugin;
  * <p>
  * The goal of SCIFIO is to make implementing Formats as fast and clear as
  * possible. If you find yourself struggling to create your own format even
- * after reading through this example, you may find it helpful to look over <a
- * href=
- * "https://github.com/scifio/scifio/tree/73ec0996195724e2d589b5ab169f547083f783f1/src/main/java/io/scif/formats"
- * > existing formats</a>, and the original <a href=
- * "https://github.com/openmicroscopy/bioformats/tree/develop/components/formats-bsd/src/loci/formats/in"
- * >Bio-Formats classes</a> from which they were derived.
+ * after reading through this example, you may find it helpful to look over
+ * <a href=
+ * "https://github.com/scifio/scifio/tree/73ec0996195724e2d589b5ab169f547083f783f1/src/main/java/io/scif/formats">existing
+ * formats</a>, and the original <a href=
+ * "https://github.com/openmicroscopy/bioformats/tree/develop/components/formats-bsd/src/loci/formats/in">Bio-Formats
+ * classes</a> from which they were derived.
  * </p>
  *
  * @author Mark Hiner
@@ -78,6 +78,7 @@ public class T3aCustomFormats {
 	 * </p>
 	 * <p>
 	 * There are six potential component types in a {@code Format}:
+	 * </p>
 	 * <ol>
 	 * <li>Metadata</li>
 	 * <li>Checker</li>
@@ -86,6 +87,7 @@ public class T3aCustomFormats {
 	 * <li>Writer</li>
 	 * <li>Translator(s)</li>
 	 * </ol>
+	 * <p>
 	 * We will cover each here, and explain if and why you would implement each.
 	 * </p>
 	 * <p>
