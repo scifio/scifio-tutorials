@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.imagej.axis.Axes;
+import net.imglib2.Interval;
 
 import org.scijava.plugin.Plugin;
 
@@ -258,12 +259,11 @@ public class T3aCustomFormats {
 			// The purpose of this method is to populate the provided Plane object by
 			// reading from the specified image and plane indices in the underlying
 			// image source.
-			// planeMin and planeMax are dimensional indices determining the requested
-			// subregion offsets into the specified plane.
+			// bounds indicates the subregion min and max within the specified plane.
 			@Override
 			public ByteArrayPlane openPlane(int imageIndex, long planeIndex,
-				ByteArrayPlane plane, long[] planeMin, long[] planeMax,
-				SCIFIOConfig config) throws FormatException, IOException
+				ByteArrayPlane plane, Interval bounds, SCIFIOConfig config)
+				throws FormatException, IOException
 			{
 				// The attached metadata should give us everything we need to determine
 				// how the provided plane's pixels will be populated.
@@ -328,18 +328,19 @@ public class T3aCustomFormats {
 			// The image and plane indices are references to the final output dataset
 			@Override
 			public void writePlane(int imageIndex, long planeIndex, Plane plane,
-				long[] planeMin, long[] planeMax) throws FormatException, IOException
+				Interval bounds) throws FormatException, IOException
 			{
 				// This Metadata object describes how to write the data out to the
 				// destination image.
 				final Metadata meta = getMetadata();
+				System.out.println("Metadata = " + meta);
 
 				// This stream is the destination image to write to.
 				final RandomAccessOutputStream stream = getStream();
+				System.out.println("Stream = " + stream);
 
 				// The given Plane object is the source plane to write
 				final byte[] bytes = plane.getBytes();
-
 				System.out.println(bytes.length);
 			}
 

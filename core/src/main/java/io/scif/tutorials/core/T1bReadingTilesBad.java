@@ -26,9 +26,10 @@ import java.io.IOException;
 /**
  * WARNING: this code intentionally fails. For functional code, see
  * {@link T1cReadingTilesGood}.
- *
+ * <p>
  * Tutorial demonstrating the wrong way to use the SCIFIO API to open large
  * images as tiles.
+ * </p>
  * 
  * @author Mark Hiner
  */

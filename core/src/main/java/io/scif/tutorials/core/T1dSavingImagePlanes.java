@@ -23,6 +23,7 @@ import io.scif.SCIFIO;
 import io.scif.Writer;
 import io.scif.io.Location;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -72,9 +73,13 @@ public class T1dSavingImagePlanes {
 		// the planes out in order.
 		for (int i = 0; i < reader.getImageCount(); i++) {
 			for (int j = 0; j < reader.getPlaneCount(i); j++) {
+				System.out.println("Writing image #" + i + ", plane #" + j);
 				writer.savePlane(i, j, reader.openPlane(i, j));
 			}
 		}
+		System.out.println("Wrote all planes to " + //
+			new File(outPath).getAbsolutePath());
+
 		// Note that this code is for illustration purposes only.
 		// A more general solution would need higher level API that could account
 		// for larger planes, etc..

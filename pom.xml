@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>19.2.0</version>
+		<version>22.3.0</version>
 		<relativePath />
 	</parent>
 
-	<groupId>scifio-tutorials</groupId>
-	<artifactId>scifio-tutorials-aggregator</artifactId>
+	<groupId>io.scif</groupId>
+	<artifactId>pom-scifio-tutorials</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 

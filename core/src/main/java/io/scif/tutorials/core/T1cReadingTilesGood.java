@@ -25,8 +25,11 @@ import io.scif.Reader;
 import io.scif.SCIFIO;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import net.imagej.axis.Axes;
+import net.imglib2.FinalInterval;
+import net.imglib2.Interval;
 
 /**
  * Tutorial using the SCIFIO API to open a large image in tiles. Once planes
@@ -71,21 +74,20 @@ public class T1cReadingTilesGood {
 			final long optimalTileHeight = reader.getOptimalTileHeight(imageIndex);
 
 			// SCIFIO images are divided into "Planar" and "Non-Planar" axes
-			// "Planar" axes are used to specify physical plane sizes
-			// "Non-Planar" axes are used to specify plane counts
+			// - "Planar" axes are used to specify physical plane sizes.
+			// - "Non-Planar" axes are used to specify plane counts.
 			// A tile is just a sub-region of an image.
-			// To open a sub-region, we have to specify start positions
-			// and lengths in every Planar axis.
-			// Thus we will create arrays of the appropriate size, and
-			// just modify the X any Y axes positions as needed.
-			final long[] offsets = new long[iMeta.getPlanarAxisCount()];
-			final long[] extents = iMeta.getAxesLengthsPlanar();
+			// To open a sub-region, we have to specify bounds over the planar axes.
+			System.out.println("Planar axis count = " + iMeta.getPlanarAxisCount());
+			System.out.println("Planar axis lengths = " + //
+				Arrays.toString(iMeta.getAxesLengthsPlanar()));
 
 			// These are the indices of the X and Y axis in the image (and thus
 			// in the array of planar axes, since planar axes always "come first"
 			// in the image)
 			final int xAxis = iMeta.getAxisIndex(Axes.X);
 			final int yAxis = iMeta.getAxisIndex(Axes.Y);
+			System.out.println("xAxis = " + xAxis + ", yAxis = " + yAxis);
 
 			// We need to figure out how many tiles are actually present in a
 			// plane, given the tile height and width that we're using
@@ -103,26 +105,32 @@ public class T1cReadingTilesGood {
 
 						// These are pointers to the offsets in the current plane,
 						// from where we will start reading the next tile
-						offsets[xAxis] = tileX * optimalTileWidth;
-						offsets[yAxis] = tileY * optimalTileHeight;
+						final long xMin = tileX * optimalTileWidth;
+						final long yMin = tileY * optimalTileHeight;
 
 						// We also need to check the lengths of our tile, to see
 						// if they would run outside the image - due to the plane
 						// not being perfectly divisible by the tile dimensions.
-						extents[xAxis] =
-							Math.min(optimalTileWidth, iMeta.getAxisLength(Axes.X) - offsets[xAxis]);
-						extents[yAxis] =
-							Math.min(optimalTileHeight, iMeta.getAxisLength(Axes.Y) - offsets[yAxis]);
+						final long xLength =
+							Math.min(optimalTileWidth, iMeta.getAxisLength(Axes.X) - xMin);
+						final long yLength =
+							Math.min(optimalTileHeight, iMeta.getAxisLength(Axes.Y) - yMin);
+
+						final Interval bounds = FinalInterval.createMinSize(xMin, yMin, xLength, yLength);
 
 						// Finally we open the current plane, using an openPlane signature
 						// that allows us to specify a sub-region of the current plane.
 						Plane p =
-							reader.openPlane(imageIndex, planeIndex, offsets, extents);
+							reader.openPlane(imageIndex, planeIndex, bounds);
 
 						// Here we would do any necessary processing of each tile's bytes.
 						// In this, we'll just print out the plane and position.
-						System.out.println("Image:" + (imageIndex+1) + " Plane:" + (planeIndex+1) + " Tile:" +
-						((tileX * tilesWide) + tileY + 1) + " -- " + p);
+						System.out.println("Image:" + (imageIndex + 1) + //
+							" Plane:" + (planeIndex + 1) + //
+							" Tile:" + ((tileX * tilesWide) + tileY + 1) + //
+							" Offset:" + xMin + "," + yMin + //
+							" Length:" + xLength + "," + yLength + //
+							" -- " + p);
 
 						// NB: the openPlane signature we used creates a new plane each
 						// time. If there are a significant number of tiles being read, it

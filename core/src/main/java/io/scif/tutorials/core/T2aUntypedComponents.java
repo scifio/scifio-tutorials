@@ -59,6 +59,7 @@ public class T2aUntypedComponents {
 		// Format that can support an image, is parse the Metadata of that image.
 		final Parser parser = format.createParser();
 		final Metadata meta = parser.parse(sampleImage);
+		System.out.println("Metadata = " + meta);
 
 		// Metadata is used by other components, such as Readers, Writers, and
 		// Translators to open, save, and convert -- respectively -- image
