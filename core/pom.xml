@@ -18,12 +18,12 @@
 	<inceptionYear>2011</inceptionYear>
 	<organization>
 		<name>SCIFIO</name>
-		<url>http://scif.io/</url>
+		<url>https://scif.io/</url>
 	</organization>
 	<licenses>
 		<license>
 			<name>CC0 1.0 Universal License</name>
-			<url>http://creativecommons.org/publicdomain/zero/1.0/</url>
+			<url>https://creativecommons.org/publicdomain/zero/1.0/</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
@@ -32,7 +32,7 @@
 		<developer>
 			<id>ctrueden</id>
 			<name>Curtis Rueden</name>
-			<url>http://imagej.net/User:Rueden</url>
+			<url>https://imagej.net/User:Rueden</url>
 			<roles>
 				<role>founder</role>
 				<role>lead</role>
@@ -47,7 +47,7 @@
 	<contributors>
 		<contributor>
 			<name>Mark Hiner</name>
-			<url>http://imagej.net/User:Hinerm</url>
+			<url>https://imagej.net/User:Hinerm</url>
 			<properties><id>hinerm</id></properties>
 			<roles><role>founder</role></roles>
 		</contributor>
@@ -64,7 +64,7 @@
 		<connection>scm:git:git://github.com/scifio/scifio-tutorials</connection>
 		<developerConnection>scm:git:git@github.com:scifio/scifio-tutorials</developerConnection>
 		<tag>HEAD</tag>
-		<url>http://github.com/scifio/scifio-tutorials</url>
+		<url>https://github.com/scifio/scifio-tutorials</url>
 	</scm>
 	<issueManagement>
 		<system>GitHub Issues</system>
@@ -84,7 +84,7 @@
 	<repositories>
 		<repository>
 			<id>imagej.public</id>
-			<url>http://maven.imagej.net/content/groups/public</url>
+			<url>https://maven.imagej.net/content/groups/public</url>
 		</repository>
 	</repositories>
 
