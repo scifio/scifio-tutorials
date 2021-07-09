@@ -78,8 +78,8 @@
 		<url>https://github.com/scifio/scifio-tutorials/issues</url>
 	</issueManagement>
 	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.org/scifio/scifio-tutorials</url>
+		<system>GitHub Actions</system>
+		<url>https://github.com/scifio/scifio-tutorials/actions</url>
 	</ciManagement>
 
 	<properties>
