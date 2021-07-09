@@ -1,4 +1,4 @@
-[![](https://travis-ci.org/scifio/scifio-tutorials.svg?branch=master)](https://travis-ci.org/scifio/scifio-tutorials)
+[![](https://github.com/scifio/scifio-tutorials/actions/workflows/build-main.yml/badge.svg)](https://github.com/scifio/scifio-tutorials/actions/workflows/build-main.yml)
 
 This project contains example code for working with [SCIFIO][1].
 
