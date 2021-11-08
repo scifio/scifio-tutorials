@@ -68,7 +68,7 @@
 	</modules>
 
 	<scm>
-		<connection>scm:git:git://github.com/scifio/scifio-tutorials</connection>
+		<connection>scm:git:https://github.com/scifio/scifio-tutorials</connection>
 		<developerConnection>scm:git:git@github.com:scifio/scifio-tutorials</developerConnection>
 		<tag>HEAD</tag>
 		<url>https://github.com/scifio/scifio-tutorials</url>
