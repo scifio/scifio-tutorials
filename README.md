@@ -31,7 +31,7 @@ individual components of SCIFIO allow more precise control.
 The tutorials are named in a suggested order for execution:
   * Tutorials 1a-d focus on basic image IO using convenience methods
   * Tutorials 2a-b cover individual component use
-  * Tutorials 3a-c explain the discovery mechanism and defining
+  * Tutorials 3a-b explain the discovery mechanism and defining
     your own SCIFIO Formats and components.
 
 LICENSING
