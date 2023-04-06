@@ -33,17 +33,19 @@ import io.scif.ImageMetadata;
 import io.scif.Plane;
 import io.scif.SCIFIO;
 import io.scif.config.SCIFIOConfig;
-import io.scif.io.RandomAccessInputStream;
-import io.scif.io.RandomAccessOutputStream;
 import io.scif.services.FormatService;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
 import net.imagej.axis.Axes;
 import net.imglib2.Interval;
 
+import org.scijava.io.handle.DataHandle;
+import org.scijava.io.location.Location;
+import org.scijava.io.location.LocationService;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -181,7 +183,7 @@ public class T3aCustomFormats {
 
 			// In this method we populate the given Metadata object
 			@Override
-			public void typedParse(final RandomAccessInputStream stream,
+			public void typedParse(final DataHandle<Location> handle,
 				final Metadata meta, final SCIFIOConfig config) throws IOException,
 				FormatException
 			{
@@ -337,9 +339,9 @@ public class T3aCustomFormats {
 				final Metadata meta = getMetadata();
 				System.out.println("Metadata = " + meta);
 
-				// This stream is the destination image to write to.
-				final RandomAccessOutputStream stream = getStream();
-				System.out.println("Stream = " + stream);
+				// This data handle is the destination image to write to.
+				final DataHandle<Location> dataHandle = getHandle();
+				System.out.println("DataHandle = " + dataHandle);
 
 				// The given Plane object is the source plane to write
 				final byte[] bytes = plane.getBytes();
@@ -450,7 +452,7 @@ public class T3aCustomFormats {
 	// *** END OF SAMPLE FORMAT ***
 
 	// This method is provided simply to confirm the format is discovered
-	public static void main(final String... args) throws FormatException {
+	public static void main(final String... args) throws FormatException, URISyntaxException {
 		// ------------------------------------------------------------------------
 		// COMPARISON WITH BIO-FORMATS 4.X
 		// In Bio-Formats 4.X, adding support for a new format required modifying
@@ -470,9 +472,12 @@ public class T3aCustomFormats {
 		// ... and a sample image path:
 		final String sampleImage = "notAnImage.scifiosmpl";
 
+		// Resolving the Location of this image.
+		Location location = scifio.get(LocationService.class).resolve(sampleImage);
+		
 		// As SampleFormat below was annotated as a @Plugin it should be available
 		// to our context:
-		final Format format = scifio.format().getFormat(sampleImage);
+		final Format format = scifio.format().getFormat(location);
 
 		// Verify that we found the format plugin
 		System.out.println("SampleFormat found via FormatService: " +

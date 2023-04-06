@@ -21,10 +21,14 @@ import io.scif.FormatException;
 import io.scif.Reader;
 import io.scif.SCIFIO;
 import io.scif.Writer;
-import io.scif.io.Location;
+import io.scif.io.location.TestImgLocation;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+
+import org.scijava.io.location.Location;
+import org.scijava.io.location.LocationService;
 
 /**
  * Tutorial demonstrating use of the Writer component.
@@ -34,31 +38,35 @@ import java.io.IOException;
 public class T1dSavingImagePlanes {
 
 	public static void main(final String... args) throws FormatException,
-		IOException
+		IOException, URISyntaxException
 	{
 		// In this tutorial, we're going to make our .fake sample image
-		// "real". If you look at the FakeFormat source code, you'll notice that
+		// "real". If you look at the TestImgFormat source code, you'll notice that
 		// it doesn't have a functional Writer, so we'll have to translate
 		// to a different Format that can write our fake planes to disk.
 
 		final SCIFIO scifio = new SCIFIO();
-		final String sampleImage =
-			"8bit-signed&pixelType=int8&lengths=50,50,3,5,7&axes=X,Y,Z,Channel,Time.fake";
+		
+		// Create a fake image and get its Location.
+		Location sampleImageLocation = FakeTutorialImages.sampleImage();
 
 		// We'll need a path to write to. By making it a ".png" we are locking in
 		// the final format of the file on disk.
 		final String outPath = "SCIFIOTutorial.png";
+		
+		// We can resolve this Location in the same way as T1aIntroToSCIFIO
+		Location outLoction = scifio.get(LocationService.class).resolve(outPath); 
 
 		// Clear the file if it already exists.
-		final Location l = new Location(scifio.getContext(), outPath);
-		if (l.exists()) l.delete();
+		File f = new File(outPath);
+		if (f.exists()) f.delete();
 
 		// We'll need a reader for the input image
-		final Reader reader = scifio.initializer().initializeReader(sampleImage);
+		final Reader reader = scifio.initializer().initializeReader(sampleImageLocation);
 
 		// .. and a writer for the output path
 		final Writer writer =
-			scifio.initializer().initializeWriter(sampleImage, outPath);
+			scifio.initializer().initializeWriter(sampleImageLocation, outLoction);
 
 		// Note that these initialize methods are used for convenience.
 		// Initializing a reader and a writer requires that you set the source

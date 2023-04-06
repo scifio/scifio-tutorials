@@ -27,6 +27,8 @@ import io.scif.SCIFIO;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.scijava.io.location.Location;
+
 import net.imagej.axis.Axes;
 import net.imglib2.FinalInterval;
 import net.imglib2.Interval;
@@ -47,11 +49,11 @@ public class T1cReadingTilesGood {
 		final SCIFIO scifio = new SCIFIO();
 
 		// This time we're going to set up an image with planes that won't fit
-		// in a 2GB byte array.
-		final String hugeImage = "hugePlane&lengths=70000,80000.fake";
-
+		// in a 2GB byte array and get its Location again.
+		Location hugeImageLocation = FakeTutorialImages.hugeImage();
+		
 		// We initialize a reader as we did before
-		final Reader reader = scifio.initializer().initializeReader(hugeImage);
+		final Reader reader = scifio.initializer().initializeReader(hugeImageLocation);
 
 		// In T1b we saw that the naive use of the API to open planes doesn't
 		// work when the individual planes are too large.
