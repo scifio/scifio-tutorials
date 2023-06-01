@@ -57,7 +57,7 @@ public class T1aIntroToSCIFIO {
 		// We use the {@link LocationService} to resolve our input image to a {@link Location}. 
 		// a Location identifies where the data resides, without necessarily specifying 
 		// how to access that data.
-		Location location = scifio.get(LocationService.class).resolve(sampleImage);
+		Location location = scifio.location().resolve(sampleImage);
 		
 		// This method checks the Context used by our SCIFIO instance for all its
 		// known format plugins, and returns an io.scif.Reader capable of opening

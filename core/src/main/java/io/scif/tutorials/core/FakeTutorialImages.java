@@ -23,7 +23,7 @@ public class FakeTutorialImages {
 	// T1aIntroToSCIFIO
 	// final String sampleImage = 
 	//     "8bit-unsigned&pixelType=uint8&lengths=50,50,3,5,7&axes=X,Y,Z,Channel,Time.fake";
-	// Location location = scifio.get(LocationService.class).resolve(sampleImage);
+	// Location location = scifio.location().resolve(sampleImage);
 	public static Location sampleImage() {
 		TestImgLocation.Builder b = new Builder();
 		b.pixelType("uint8"); // set the pixel type

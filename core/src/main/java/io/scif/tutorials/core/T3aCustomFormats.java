@@ -473,7 +473,7 @@ public class T3aCustomFormats {
 		final String sampleImage = "notAnImage.scifiosmpl";
 
 		// Resolving the Location of this image.
-		Location location = scifio.get(LocationService.class).resolve(sampleImage);
+		Location location = scifio.location().resolve(sampleImage);
 		
 		// As SampleFormat below was annotated as a @Plugin it should be available
 		// to our context:

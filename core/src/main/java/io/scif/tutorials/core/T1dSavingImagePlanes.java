@@ -55,7 +55,7 @@ public class T1dSavingImagePlanes {
 		final String outPath = "SCIFIOTutorial.png";
 		
 		// We can resolve this Location in the same way as T1aIntroToSCIFIO
-		Location outLoction = scifio.get(LocationService.class).resolve(outPath); 
+		Location outLoction = scifio.location().resolve(outPath); 
 
 		// Clear the file if it already exists.
 		File f = new File(outPath);

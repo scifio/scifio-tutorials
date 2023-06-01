@@ -56,7 +56,7 @@ public class T1OpeningOMEXML {
 		final String samplePNG = "SCIFIOTutorial.png";
 		
 		// We can get the location of our samplePNG
-		Location location = scifio.get(LocationService.class).resolve(samplePNG);
+		Location location = scifio.location().resolve(samplePNG);
 
 		// This is the Metadata object we will translate to OMEXML Metadata;
 		Metadata meta = null;
