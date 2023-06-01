@@ -23,6 +23,8 @@ import io.scif.SCIFIO;
 
 import java.io.IOException;
 
+import org.scijava.io.location.Location;
+
 /**
  * WARNING: this code intentionally fails. For functional code, see
  * {@link T1cReadingTilesGood}.
@@ -43,11 +45,15 @@ public class T1bReadingTilesBad {
 		final SCIFIO scifio = new SCIFIO();
 
 		// This time we're going to set up an imageID with planes that won't fit
-		// in a byte array.
-		final String hugeImage = "hugePlane&lengths=70000,80000.fake";
+		// in a byte array. 
+		// For the rest of these tutorials, we will use the {@link TestImgLocation.Builder}
+		// to build fake images for us and return their Location. This is in contrast to creating 
+		// a fake image as a String and then resolving its Location with LocationService like
+		// we did in T1aIntroToSCIFIO.
+		Location hugeImageLocation = FakeTutorialImages.hugeImage();
 
 		// We initialize a reader as we did before
-		final Reader reader = scifio.initializer().initializeReader(hugeImage);
+		final Reader reader = scifio.initializer().initializeReader(hugeImageLocation);
 
 		// Now we'll try the naive thing, and just open all the planes in this
 		// dataset.
