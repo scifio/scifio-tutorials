@@ -26,6 +26,8 @@ import io.scif.SCIFIO;
 
 import java.io.IOException;
 
+import org.scijava.io.location.Location;
+
 /**
  * Demonstrates how individual components can be used together instead of the
  * convenience methods in the T1 tutorials. This is for more advanced SCIFIO
@@ -44,8 +46,9 @@ public class T2aUntypedComponents {
 
 		// As always, we create a context and sample image path first.
 		final SCIFIO scifio = new SCIFIO();
-		final String sampleImage =
-			"8bit-signed&pixelType=int8&lengths=50,50,3,5,7&axes=X,Y,Z,Channel,Time.fake";
+		
+		// Create a fake image and get its Location.
+		Location sampleImageLocation = FakeTutorialImages.sampleImage();
 
 		// This time we'll get a handle on the Format itself, which will allow us
 		// to create the additional components. scifio.format() contains several
@@ -53,12 +56,12 @@ public class T2aUntypedComponents {
 		// NB: This implicitly invokes an io.scif.Checker component to determine
 		// format compatibility. These can also be used individually, e.g. if
 		// given a list of Formats to test.
-		final Format format = scifio.format().getFormat(sampleImage);
+		final Format format = scifio.format().getFormat(sampleImageLocation);
 
 		// Typically the first thing we want to do, after confirming we have a
 		// Format that can support an image, is parse the Metadata of that image.
 		final Parser parser = format.createParser();
-		final Metadata meta = parser.parse(sampleImage);
+		final Metadata meta = parser.parse(sampleImageLocation);
 		System.out.println("Metadata = " + meta);
 
 		// Metadata is used by other components, such as Readers, Writers, and

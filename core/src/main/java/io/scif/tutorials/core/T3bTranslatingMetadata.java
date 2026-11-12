@@ -24,11 +24,12 @@ import io.scif.ImageMetadata;
 import io.scif.Metadata;
 import io.scif.SCIFIO;
 import io.scif.Translator;
-import io.scif.formats.FakeFormat;
+import io.scif.formats.TestImgFormat;
 
 import java.io.IOException;
 import java.util.List;
 
+import org.scijava.io.location.Location;
 import org.scijava.plugin.Plugin;
 
 /**
@@ -55,13 +56,13 @@ public class T3bTranslatingMetadata {
 
 		// As usual, we start by creating a SCIFIO and our trusty sample image.
 		final SCIFIO scifio = new SCIFIO();
-		final String sampleImage =
-			"8bit-unsigned&pixelType=uint8&indexed=true&planarDims=3&lengths=50,50,3&axes=X,Y,Channel.fake";
+		
+		Location sampleImageLocation = FakeTutorialImages.sampleIndexedImage();
 
 		// First let's get a handle on a compatible Format, and parse the sample
 		// image's Metadata
-		final Format format = scifio.format().getFormat(sampleImage);
-		final Metadata input = format.createParser().parse(sampleImage);
+		final Format format = scifio.format().getFormat(sampleImageLocation);
+		final Metadata input = format.createParser().parse(sampleImageLocation);
 
 		// Now that we have some Metadata, let's find the MischeviousTranslator we
 		// defined below.
@@ -79,7 +80,7 @@ public class T3bTranslatingMetadata {
 
 		// To try the MischeviousTranslator out, let's get another copy
 		// of this image's Metadata.
-		final Metadata output = format.createParser().parse(sampleImage);
+		final Metadata output = format.createParser().parse(sampleImageLocation);
 
 		// Then we translate
 		t.translate(input, output);
@@ -116,7 +117,7 @@ public class T3bTranslatingMetadata {
 	 */
 	@Plugin(type = Translator.class)
 	public static class MischeviousTranslator extends
-		AbstractTranslator<FakeFormat.Metadata, FakeFormat.Metadata>
+		AbstractTranslator<TestImgFormat.Metadata, TestImgFormat.Metadata>
 	{
 
 		// -- Translator API methods --
@@ -129,7 +130,7 @@ public class T3bTranslatingMetadata {
 		 */
 		@Override
 		protected void translateImageMetadata(final List<ImageMetadata> source,
-			final FakeFormat.Metadata dest)
+			final TestImgFormat.Metadata dest)
 		{
 			// Here we would put our translation implementation, as in T3a.
 			System.out.println("Translating source: " + source + " to dest: " + dest);
@@ -137,12 +138,12 @@ public class T3bTranslatingMetadata {
 
 		@Override
 		public Class<? extends Metadata> source() {
-			return FakeFormat.Metadata.class;
+			return TestImgFormat.Metadata.class;
 		}
 
 		@Override
 		public Class<? extends Metadata> dest() {
-			return FakeFormat.Metadata.class;
+			return TestImgFormat.Metadata.class;
 		}
 	}
 }

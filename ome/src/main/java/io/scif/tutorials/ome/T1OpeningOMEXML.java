@@ -23,7 +23,11 @@ import io.scif.SCIFIO;
 import io.scif.ome.OMEMetadata;
 import io.scif.tutorials.core.T1dSavingImagePlanes;
 
+import java.net.URISyntaxException;
 import java.io.IOException;
+
+import org.scijava.io.location.Location;
+import org.scijava.io.location.LocationService;
 
 import loci.common.xml.XMLTools;
 
@@ -35,7 +39,7 @@ import loci.common.xml.XMLTools;
 public class T1OpeningOMEXML {
 
 	public static void main(final String... args) throws FormatException,
-		IOException
+		IOException, URISyntaxException
 	{
 		// Creation of OME-XML metadata in SCIFIO is accomplished via translation.
 		// The OME-XML component is essentially a collection of translators, from
@@ -44,12 +48,15 @@ public class T1OpeningOMEXML {
 		// translator to OME-XML. Luckily we already have a tutorial which creates a
 		// PNG image for us:
 		T1dSavingImagePlanes.main();
+		
+		// We'll need a context for discovering formats and translators
+		final SCIFIO scifio = new SCIFIO();
 
 		// Now we can reference the image we wrote via this path:
 		final String samplePNG = "SCIFIOTutorial.png";
-
-		// We'll need a context for discovering formats and translators
-		final SCIFIO scifio = new SCIFIO();
+		
+		// We can get the location of our samplePNG
+		Location location = scifio.location().resolve(samplePNG);
 
 		// This is the Metadata object we will translate to OMEXML Metadata;
 		Metadata meta = null;
@@ -57,7 +64,7 @@ public class T1OpeningOMEXML {
 		// Since we are not going to be reading or writing any planes in this
 		// tutorial, we only need to populate the Metadata. To help us out, there
 		// is a very convenint method in the SCIFIO initializer:
-		meta = scifio.initializer().parseMetadata(samplePNG);
+		meta = scifio.initializer().parseMetadata(location);
 
 		// Now that we have our source Metadata, we will need OME-XML Metadata to
 		// translate to:

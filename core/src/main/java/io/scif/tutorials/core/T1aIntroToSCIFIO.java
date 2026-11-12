@@ -23,6 +23,10 @@ import io.scif.Reader;
 import io.scif.SCIFIO;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+
+import org.scijava.io.location.Location;
+import org.scijava.io.location.LocationService;
 
 /**
  * An introduction to the SCIFIO API. Demonstrates basic plane reading.
@@ -32,7 +36,7 @@ import java.io.IOException;
 public class T1aIntroToSCIFIO {
 
 	public static void main(final String... agrs) throws FormatException,
-		IOException
+		IOException, URISyntaxException
 	{
 		// The most convenient way to program against the SCIFIO API is by using
 		// an io.scif.SCIFIO instance. This is basically a "SCIFIO lens" on an
@@ -48,12 +52,17 @@ public class T1aIntroToSCIFIO {
 		// exist on disk - they are defined purely by their file name -  so they're
 		// good for testing.
 		final String sampleImage =
-			"8bit-signed&pixelType=int8&lengths=50,50,3,5,7&axes=X,Y,Z,Channel,Time.fake";
-
+			"8bit-unsigned&pixelType=uint8&lengths=50,50,3,5,7&axes=X,Y,Z,Channel,Time.fake";
+		
+		// We use the {@link LocationService} to resolve our input image to a {@link Location}. 
+		// a Location identifies where the data resides, without necessarily specifying 
+		// how to access that data.
+		Location location = scifio.location().resolve(sampleImage);
+		
 		// This method checks the Context used by our SCIFIO instance for all its
 		// known format plugins, and returns an io.scif.Reader capable of opening
 		// the specified image's planes.
-		final Reader reader = scifio.initializer().initializeReader(sampleImage);
+		final Reader reader = scifio.initializer().initializeReader(location);
 
 		// ------------------------------------------------------------------------
 		// COMPARISON WITH BIO-FORMATS 4.X
